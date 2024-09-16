@@ -136,7 +136,14 @@
 }
 
 .form-label {
-  @apply w-full max-w-[280px] font-medium text-gray-700;
+  @apply w-full max-w-[280px] font-semibold text-gray-700 ml-1 mb-1 text-[14px];
+}
+
+.input-class {
+  @apply text-[16px] placeholder:text-[16px] px-4 py-2 rounded-xl h-12 
+    border border-transparent hover:border-lime-500 active:border-none focus:border-lime-500 focus:ring-2 
+  focus:ring-lime-500 
+  text-gray-900 placeholder:text-gray-500 font-sans shadow-md focus:shadow-none;
 }
 
 .form-message {
@@ -144,9 +151,31 @@
 }
 
 .form-btn {
-  @apply rounded-3xl py-6 bg-rose-600 dark:hover:bg-rose-800 hover:bg-rose-800 text-lg font-semibold font-jetbrain w-full border text-white;
+  @apply rounded-3xl py-6 bg-lime-600 dark:hover:bg-lime-800  hover:bg-lime-800 text-lg font-semibold font-jetbrain w-full border text-white;
 }
 
 .form-link {
   @apply cursor-pointer font-medium;
+}
+.badge {
+  @apply bg-gray-200 text-gray-700 rounded-full px-2 py-1 text-xs font-semibold;
+}
+
+
+.select-trigger {
+  @apply text-[16px] placeholder:text-[16px] px-4 py-2 rounded-xl h-12 
+    border border-transparent hover:border-lime-500 focus:border-lime-500 focus:ring-2 
+    focus:ring-lime-500 text-gray-900 placeholder:text-gray-500 font-sans shadow-md focus:shadow-none;
+}
+
+.select-content {
+  @apply bg-white rounded-lg shadow-lg mt-1;
+}
+
+.select-item {
+  @apply px-4 py-2 hover:bg-lime-100 focus:bg-lime-100 text-gray-700;
+}
+
+.select-item-selected {
+  @apply bg-lime-100 font-semibold;
 }

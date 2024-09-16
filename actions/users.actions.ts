@@ -3,8 +3,9 @@
 
 import { createAdminClient } from "@/lib/appwrite";
 import { parseStringify } from "@/lib/utils";
+import console from "console";
 import { cookies } from "next/headers";
-import { Query } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 
 const {
   APPWRITE_DATABASE_ID: DB_ID,
@@ -40,7 +41,57 @@ export const signIn = async (data: signInProps) => {
 
     const user = await getUserInfo({ userId: session.userId });
     return user;
+  } catch (error: unknown) {
+    // console.log(error);
+  }
+};
+
+export const signUp = async ({ password, ...data }: signUpProps) => {
+  let newAccount;
+  try {
+    console.log(data, password);
+
+    const { email, name, activityLevel, gender, height, weight, age } = data;
+    const { account, db } = await createAdminClient();
+
+    // Account creation
+    newAccount = await account.create(ID.unique(), email, password, name);
+    if (!newAccount) throw new Error("Failed to create account");
+    // console.log("Account created:", newAccount);
+
+    // Database document creation
+    const newUser = await db.createDocument(
+      DB_ID!,
+      USER_COLLECTION_ID!,
+      ID.unique(),
+      {
+        userId: newAccount.$id,
+        email,
+        name,
+        age,
+        activityLevel,
+        height,
+        gender,
+        weight,
+      }
+    );
+    if (!newUser) throw new Error("Failed to create user document");
+    // console.log("User document created:", newUser);
+
+    // Session creation
+    const session = await account.createEmailPasswordSession(email, password);
+    console.log("Session created:", session);
+
+    cookies().set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+
+    return parseStringify(newUser);
   } catch (error) {
-    console.error("Error signing in user", error);
+    console.error("Sign-up failed:", error);
+    throw error; // Re-throw the error for higher-level handling
   }
 };

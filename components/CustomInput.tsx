@@ -17,6 +17,7 @@ interface CustomInputProps {
   name: FieldPath<z.infer<typeof formSchema>>;
   type?: string;
   placeholder: string;
+  tag?: string;
 }
 
 const CustomInput = ({
@@ -25,25 +26,31 @@ const CustomInput = ({
   name,
   type = "text",
   placeholder,
+  tag,
 }: CustomInputProps) => {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <div className="form-item">
+        <div className="form-item item ">
           <FormLabel className="form-label">{label}</FormLabel>
-          <div className="flex w-full flex-col">
-            <FormControl>
+          <div className="relative flex w-full items-center">
+            <FormControl className="relative grow">
               <Input
                 placeholder={placeholder}
-                className="input-class"
+                className="input-class pr-12" // Add padding for the tag
                 type={type}
                 {...field}
               />
             </FormControl>
-            <FormMessage className="form-message mt-2" />
+            {tag && (
+              <span className="badge absolute right-4 top-1/2 -translate-y-1/2">
+                {tag}
+              </span>
+            )}
           </div>
+          <FormMessage className="form-message mt-2" />
         </div>
       )}
     />

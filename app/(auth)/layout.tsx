@@ -8,7 +8,7 @@ export default function AuthLayout({
 }) {
   return (
     <main className="flex min-h-screen w-full justify-between bg-slate-100 dark:bg-slate-800">
-      <div className="auth-asset bg-rose-400 ">
+      <div className="auth-asset bg-lime-600 ">
         <div className="mb-16 mr-12 flex flex-col p-16 lg:mr-24">
           <Logo />
 

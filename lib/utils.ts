@@ -12,30 +12,71 @@ export const parseStringify = (value: unknown) =>
 export const authFormSchema = (type: string) =>
   z.object({
     email: z.string().email("Please enter a valid email"),
-    password: z.string().min(8),
+    password: z.string().min(8, "Password must be at least 8 characters"),
 
+    // Only required for sign-up
     name:
       type === "sign-in"
         ? z.string().optional()
         : z.string().min(3, "Name must be at least 3 characters"),
-    experience:
-      type === "sign-in"
-        ? z.enum(["beginner", "intermediate", "advanced"]).optional()
-        : z.enum(["beginner", "intermediate", "advanced"]),
+
     avatar:
       type === "sign-in"
         ? z.string().optional()
         : z.string().url("Please enter a valid avatar URL").optional(),
 
-    phone:
+    // Conditionally required fields for sign-up
+    age:
       type === "sign-in"
         ? z.string().optional()
         : z
             .string()
-            .min(10, "Phone number must be at least 10 digits")
+            .regex(/^\d+$/, "Age must be a positive integer")
             .optional(),
-    username:
+
+    gender:
       type === "sign-in"
         ? z.string().optional()
-        : z.string().min(3, "Username must be at least 3 characters"),
+        : z.enum(["male", "female", "other"]).optional(),
+
+    height:
+      type === "sign-in"
+        ? z.string().optional()
+        : z
+            .string()
+            .regex(/^\d+$/, "Height must be a positive number")
+            .optional(),
+
+    weight:
+      type === "sign-in"
+        ? z.string().optional()
+        : z
+            .string()
+            .regex(/^\d+$/, "Weight must be a positive number")
+            .optional(),
+
+    // Activity level as an enum (optional for both)
+    activityLevel:
+      type === "sign-in"
+        ? z.string().optional()
+        : z
+            .enum(["sedentary", "light", "moderate", "active", "very_active"])
+            .optional(),
+
+    // Only for sign-up
+    allergies:
+      type === "sign-in"
+        ? z.array(z.string()).optional()
+        : z
+            .array(z.string())
+            .min(0, "Please provide valid allergies")
+            .optional(),
+
+    medications:
+      type === "sign-in"
+        ? z.array(z.string()).optional()
+        : z
+            .array(z.string())
+            .min(0, "Please provide valid medications")
+            .optional(),
   });
